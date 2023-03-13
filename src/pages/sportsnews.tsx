@@ -81,7 +81,7 @@ export default function SportsNews() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {articles.map((article) => (
+            {articles?.map((article) => (
               <motion.div
                 key={article.url}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
