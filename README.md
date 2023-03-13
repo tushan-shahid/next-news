@@ -1,5 +1,7 @@
 ## Next News - A web application built on Next.js
 
+Next News is a website made with Next.js that shows news about technology, business, sports, and memes.
+
 ## Getting Started
 
 To run the application, clone the repository to your local machine and run the following commands:
