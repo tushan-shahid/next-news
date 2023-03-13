@@ -1,8 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
+import data from "../data/businessnews.json";
 
 type Article = {
   [x: string]: string | undefined;
@@ -12,7 +12,6 @@ type Article = {
   urlToImage: string;
 };
 
-const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
 const PLACEHOLDER_IMAGE_URL =
   "https://via.placeholder.com/150x150.png?text=Image+not+available";
 
@@ -25,15 +24,27 @@ export default function BusinessNews() {
   useEffect(() => {
     setIsLoading(true);
 
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&category=business&page=${page}&apiKey=${apiKey}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setArticles(data.articles);
-        setIsLoading(false);
-      });
-  }, [page]);
+    setArticles(
+      data.map((article: any) => ({
+        ...article,
+        urlToImage: article.urlToImage || PLACEHOLDER_IMAGE_URL,
+      }))
+    );
+    setIsLoading(false);
+  }, []);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+
+  //   fetch(
+  //     `https://newsapi.org/v2/top-headlines?country=us&category=sports&page=${page}&apiKey=${apiKey}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setArticles(data.articles);
+  //       setIsLoading(false);
+  //     });
+  // }, [page]);
 
   function handlePrevPage() {
     if (page > 1) {
@@ -99,10 +110,12 @@ export default function BusinessNews() {
                 />
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-2">{article.title}</h2>
-                  <p className="text-gray-700">{article.description}</p>
+                  <p className="text-gray-600 mb-2">{article.description}</p>
                   <a
                     href={article.url}
-                    className="bg-blue-500 text-white py-2 px-4 rounded mt-4 inline-block hover:bg-blue-600"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
                   >
                     Read more
                   </a>
@@ -111,15 +124,15 @@ export default function BusinessNews() {
             ))}
           </motion.div>
         )}
-        <div className="flex justify-center my-8">
+        <div className="flex justify-center items-center mt-8">
           <button
-            className="bg-blue-500 text-white py-2 px-4 rounded mr-4 hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-4"
             onClick={handlePrevPage}
           >
             Previous
           </button>
           <button
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
             onClick={handleNextPage}
           >
             Next

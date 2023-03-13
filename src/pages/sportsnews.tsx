@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
-
+import data from "../data/sportsnews.json";
 type Article = {
   [x: string]: string | undefined;
   title: string;
@@ -25,15 +25,27 @@ export default function SportsNews() {
   useEffect(() => {
     setIsLoading(true);
 
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&category=sports&page=${page}&apiKey=${apiKey}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setArticles(data.articles);
-        setIsLoading(false);
-      });
-  }, [page]);
+    setArticles(
+      data.map((article: any) => ({
+        ...article,
+        urlToImage: article.urlToImage || PLACEHOLDER_IMAGE_URL,
+      }))
+    );
+    setIsLoading(false);
+  }, []);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+
+  //   fetch(
+  //     `https://newsapi.org/v2/top-headlines?country=us&category=sports&page=${page}&apiKey=${apiKey}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setArticles(data.articles);
+  //       setIsLoading(false);
+  //     });
+  // }, [page]);
 
   function handlePrevPage() {
     if (page > 1) {

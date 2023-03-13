@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
-
+import data from "../data/technews.json";
 type Article = {
   [x: string]: string | undefined;
   title: string;
@@ -22,16 +22,27 @@ export default function TechNews() {
   const [hoveredImageUrl, setHoveredImageUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetch(
+  //     `https://newsapi.org/v2/top-headlines?country=us&category=technology&page=${page}&apiKey=${apiKey}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setArticles(data.articles);
+  //       setIsLoading(false);
+  //     });
+  // }, [page]);
   useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&category=technology&page=${page}&apiKey=${apiKey}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setArticles(data.articles);
-        setIsLoading(false);
-      });
+
+    setArticles(
+      data.map((article: any) => ({
+        ...article,
+        urlToImage: article.urlToImage || PLACEHOLDER_IMAGE_URL,
+      }))
+    );
+    setIsLoading(false);
   }, [page]);
 
   function handlePrevPage() {
